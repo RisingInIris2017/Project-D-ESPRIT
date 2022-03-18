@@ -4,7 +4,7 @@ Us = [];
 % 设置独立信源的个数，文献1-6称为K
 L = 2;
 % 初始化各子阵的阵元个数，文献1-6称为Mk
-antenna_in_subarray = 5;
+antenna_in_subarray = 3;
 % 设置子阵的个数
 number_of_subarray = 3;
 % 计算求得总阵元个数M，用于l的迭代
@@ -31,3 +31,10 @@ command_lower = extractBefore(command_lower, strlength(command_lower)) + ");";
 Jupper = eval(command_upper);
 % J下一横
 Jlower = eval(command_lower);
+
+%% DPM算法
+for l = 1:M
+    for k = 1:L
+        eval("ul_"+num2str(l)+"k_"+num2str(k)+"=rand(antenna_in_subarray,1);")
+    end
+end
