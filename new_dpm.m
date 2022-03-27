@@ -8,11 +8,11 @@ L = 2;
 number_of_subarray = 3;
 % 设置子阵中阵元的个数，这个参数在文献[1]中就是Mk，在文献[1-6]中称为m
 % 我们假设所有的子阵阵元个数都相同
-antenna_in_subarray = 5;
+antenna_in_subarray = 4;
 % 总阵元个数
 M = number_of_subarray * antenna_in_subarray;
 % 设置真实 DOA
-doa_vector = 10*(1:L);
+doa_vector = [10 30];
 % 设置信号功率和信噪比，均为分贝，并求得噪声功率
 Ps = 0;
 SNR = 20;
@@ -28,9 +28,9 @@ Jupperk = [eye(antenna_in_subarray-1,antenna_in_subarray-1),zeros(antenna_in_sub
 Jlowerk = [zeros(antenna_in_subarray-1,1),eye(antenna_in_subarray-1,antenna_in_subarray-1)];
 
 % J上一横
-Jupper = eval(command_upper);
+Jupper = kron(eye(number_of_subarray),Jupperk);
 % J下一横
-Jlower = eval(command_lower);
+Jlower = kron(eye(number_of_subarray),Jlowerk);
 
 %% xk生成部分
 % 在这个脚本变为函数后，这一段应删去
@@ -44,16 +44,15 @@ eval(xkg_command);
 %% AC迭代的参数
 % 在这个脚本变为函数后，这一段应删去
 % 规定子阵拓扑图，生成文献[2-XB04]中的拉普拉斯矩阵
-% 简单起见，我们设置三角形拓扑，1与2相连，1与3相连，2与3不相连
+% 简单起见，我们设置三角形拓扑，1与2相连，2与3相连，1与3不相连
 % 注意，这里不允许使用全连通图，否则W矩阵没有我们需要的特性。
-laplacianMatrix = [2,-1,-1;-1,1,0;-1,0,1];
+laplacianMatrix = [1,-1,0;0,2,-1;0,0,1];
 % 利用文献[2-XB04]中的公式W=I-aL生成W矩阵
 % 拉普拉斯矩阵前面的标量系数alpha必须大于0
 % 最佳的alpha取值为最大的特征值与第二小的特征值算术平均取倒数
-% 在上述拓扑图规定中，拉普拉斯矩阵必然是实对称的，满足svd与eig等效定理条件。
-% 下面用svd()取代了eig()
-eigLapMat = svd(laplacianMatrix);
-alpha = 2/(eigLapMat(1) + eigLapMat(number_of_subarray - 1));
+eigLapMat = sort(eig(laplacianMatrix),'descend');
+% alpha = 2/(eigLapMat(1) + eigLapMat(number_of_subarray - 1));
+alpha = 0.5;
 W = eye(number_of_subarray) - alpha * laplacianMatrix;
 
 
@@ -62,7 +61,8 @@ W = eye(number_of_subarray) - alpha * laplacianMatrix;
 PM = 10;
 % 生成迭代初始值
 % 迭代初始的Es（Us，信号子空间）矩阵，每antenna_in_subarray行归属一个子阵，每列归属一个信号
-Es = rand(antenna_in_subarray * number_of_subarray, L);
+% Es = rand(antenna_in_subarray * number_of_subarray, L);
+Es = 0.8*ones(antenna_in_subarray * number_of_subarray, L);
 % 迭代初始的a矩阵，每列归属一个t时刻，每行均分给各个子阵，每层归属一个信号
 a = zeros(N, number_of_subarray, L);
 for pm = 1:PM
@@ -92,3 +92,11 @@ for q = 1:L
         Es((p-1)*antenna_in_subarray+1:p*antenna_in_subarray,L) = Es((p-1)*antenna_in_subarray+1:p*antenna_in_subarray,L)/vecnorm(Es((p-1)*antenna_in_subarray+1:p*antenna_in_subarray,L));
     end  
 end
+% 暂时用J算子直接处理Es，检验Es的生成算法是否有效
+% 之后需另外重写算法替代
+Es_upper = Jupper*Es;
+Es_lower = Jlower*Es;
+eig_psi = eig((Es_upper'*Es_upper)\Es_upper'*Es_lower);
+phase_psi=atan2(imag(eig_psi),real(eig_psi));
+doa_estimate = sort(abs(asin(phase_psi/pi)'*180/pi));
+error = abs(doa_estimate - doa_vector)
