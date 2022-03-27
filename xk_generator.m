@@ -18,8 +18,8 @@ function [varargout] = xk_generator(Ps, L, N, SNR, number_of_subarray, doa_vecto
     end
 
     % ¼ÓÔë
-%     for k = 1:number_of_subarray
-%         n = wgn(antenna_in_subarray,N,Ps-SNR);
-%         eval("varargout{k}=x_"+num2str(k)+"+n;");
-%     end
+    for k = 1:number_of_subarray
+        n = wgn(antenna_in_subarray,N,Ps-SNR);
+        eval("varargout{k}=x_"+num2str(k)+"+n;");
+    end
 end
