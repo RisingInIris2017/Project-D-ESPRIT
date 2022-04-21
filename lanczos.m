@@ -33,7 +33,6 @@ Jupper = kron(eye(number_of_subarray),Jupperk);
 Jlower = kron(eye(number_of_subarray),Jlowerk);
 
 %% xk生成部分
-% 在这个脚本变为函数后，这一段应删去
 xkg_command = "[";
 for k = 1:number_of_subarray
     xkg_command = xkg_command + "x_"+num2str(k)+",";

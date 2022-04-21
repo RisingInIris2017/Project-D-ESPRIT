@@ -113,9 +113,8 @@ for index1 = 1:L
     end
 end
 
-det(Bmat)
-% psi = Bmat\Wmat;
+psi = Bmat\Wmat;
 
-% phase_psi=atan2(imag(eig_psi),real(eig_psi));
-% doa_estimate = sort(abs(asin(phase_psi/pi)'*180/pi));
-% error = abs(doa_estimate - doa_vector)
+phase_psi=atan2(imag(eig_psi),real(eig_psi));
+doa_estimate = sort(abs(asin(phase_psi/pi)'*180/pi));
+error = abs(doa_estimate - doa_vector)
