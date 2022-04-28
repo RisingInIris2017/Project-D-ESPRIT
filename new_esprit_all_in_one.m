@@ -11,8 +11,6 @@ numbers_of_samples = 1000;
 t = 0:numbers_of_samples-1;
 % 信号功率(dB)
 Ps=0;
-% 设置信噪比
-SNR = 20;
 
 % 阵列参数
 % 估计两个信号，所以只使用两个子阵，这两个子阵具有移不变特性
@@ -43,13 +41,15 @@ RMSE_dpm = [];
 % 完整记录
 totalerror_classical = [];
 totalerror_dpm = [];
-test_SNR = -10:5:20;
+test_SNR = -15:5:20;
 for SNR = test_SNR % 信噪比的步进
+    disp(['当前信噪比：',num2str(SNR),'dB']);
     % 记录重复试验误差
     error_classical = [];
     error_dpm = [];
     
     for repeat = 1:50 % 重复实验repeat次
+        disp(['第',num2str(repeat),'次实验开始']);
         % 阵列响应生成
         % 子阵 X 经AWGN信道接收的信号
         X=awgn(Ax*s,SNR,'measured');
@@ -184,7 +184,7 @@ axis tight
 xlabel('信噪比/dB','FontWeight','bold');
 ylabel('均方误差/角度','FontWeight','bold');
 title('两种ESPRIT对2号信号的估计均方误差随信噪比变化图','FontWeight','bold');
-datatip(classical_1,0,RMSE_classical(3,1),'SnapToDataVertex','off');
-datatip(classical_2,0,RMSE_classical(3,2),'SnapToDataVertex','off');
-datatip(dpm_1,0,RMSE_dpm(3,1),'SnapToDataVertex','off');
-datatip(dpm_2,0,RMSE_dpm(3,2),'SnapToDataVertex','off');
+datatip(classical_1,0,RMSE_classical(4,1),'SnapToDataVertex','off');
+datatip(classical_2,0,RMSE_classical(4,2),'SnapToDataVertex','off');
+datatip(dpm_1,0,RMSE_dpm(4,1),'SnapToDataVertex','off');
+datatip(dpm_2,0,RMSE_dpm(4,2),'SnapToDataVertex','off');
