@@ -3,7 +3,7 @@
 close all;clear;clc;
 %% 参数设置部分
 % 真实的波达方向角
-theta_real = [20 40];
+theta_real = [0 40];
 % 信号参数
 independent_signals_number = 2;
 % 快拍数
@@ -295,7 +295,7 @@ end
 %% 画图
 figure;
 % 画两种ESPRIT对1号信号的估计均方误差随信噪比变化图
-subplot(121);
+figure(1);
 dpm_2_1 = plot(test_SNR, RMSE_2(:,1), 'bo-', 'LineWidth', 4);
 hold on
 dpm_10_1 = plot(test_SNR, RMSE_10(:,1), 'mo-', 'LineWidth', 4);
@@ -303,13 +303,14 @@ hold on
 dpm_20_1 = plot(test_SNR, RMSE_20(:,1), 'ro-', 'LineWidth', 4);
 hold on
 dpm_30_1 = plot(test_SNR, RMSE_30(:,1), 'co-', 'LineWidth', 4);
-legend(['迭代',num2str(iter2),'次'],['迭代',num2str(iter10),'次'],['迭代',num2str(iter20),'次'],['迭代',num2str(iter30),'次']);
+legend(['迭代',num2str(iter2),'次'],['迭代',num2str(iter10),'次'],['迭代',num2str(iter20),'次'],['迭代',num2str(iter30),'次'],'FontSize',25);
 axis tight
-xlabel('信噪比/dB','FontWeight','bold');
-ylabel('均方误差/角度','FontWeight','bold');
-title('不同迭代次数下1号信号的估计均方误差随信噪比变化图','FontWeight','bold');
+set(gca,'linewidth',2,'fontsize',25);
+xlabel('信噪比/dB','FontWeight','bold','FontSize',25);
+ylabel('均方误差/角度','FontWeight','bold','FontSize',25);
+title('不同迭代次数下1号信号的估计均方误差随信噪比变化图','FontWeight','bold','FontSize',25);
 % 画两种ESPRIT对2号信号的估计均方误差随信噪比变化图
-subplot(122);
+figure(2);
 dpm_2_2 = plot(test_SNR, RMSE_2(:,2), 'bo-', 'LineWidth', 4);
 hold on
 dpm_10_2 = plot(test_SNR, RMSE_10(:,2), 'mo-', 'LineWidth', 4);
@@ -317,11 +318,12 @@ hold on
 dpm_20_2 = plot(test_SNR, RMSE_20(:,2), 'ro-', 'LineWidth', 4);
 hold on
 dpm_30_2 = plot(test_SNR, RMSE_30(:,1), 'co-', 'LineWidth', 4);
-legend(['迭代',num2str(iter2),'次'],['迭代',num2str(iter10),'次'],['迭代',num2str(iter20),'次'],['迭代',num2str(iter30),'次']);
+legend(['迭代',num2str(iter2),'次'],['迭代',num2str(iter10),'次'],['迭代',num2str(iter20),'次'],['迭代',num2str(iter30),'次'],'FontSize',25);
 axis tight
-xlabel('信噪比/dB','FontWeight','bold');
-ylabel('均方误差/角度','FontWeight','bold');
-title('不同迭代次数下2号信号的估计均方误差随信噪比变化图','FontWeight','bold');
+set(gca,'linewidth',2,'fontsize',25);
+xlabel('信噪比/dB','FontWeight','bold','FontSize',25);
+ylabel('均方误差/角度','FontWeight','bold','FontSize',25);
+title('不同迭代次数下2号信号的估计均方误差随信噪比变化图','FontWeight','bold','FontSize',25);
 datatip(dpm_2_1,-15,RMSE_2(1,1),'SnapToDataVertex','off');
 datatip(dpm_2_2,-15,RMSE_2(1,2),'SnapToDataVertex','off');
 datatip(dpm_10_1,-15,RMSE_10(1,1),'SnapToDataVertex','off');

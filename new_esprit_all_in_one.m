@@ -3,7 +3,7 @@
 close all;clear;clc;
 %% 参数设置部分
 % 真实的波达方向角
-theta_real = [20 40];
+theta_real = [0 40];
 % 信号参数
 independent_signals_number = 2;
 % 快拍数
@@ -165,25 +165,27 @@ end
 %% 画图
 figure;
 % 画两种ESPRIT对1号信号的估计均方误差随信噪比变化图
-subplot(121);
+figure(1);
 classical_1 = plot(test_SNR, RMSE_classical(:,1), 'bo-', 'LineWidth', 4);
 hold on
 dpm_1 = plot(test_SNR, RMSE_dpm(:,1), 'ro-', 'LineWidth', 4);
-legend('经典ESPRIT','分布式幂方法ESPRIT');
+legend('经典ESPRIT','分布式幂方法ESPRIT','FontSize',25);
 axis tight
-xlabel('信噪比/dB','FontWeight','bold');
-ylabel('均方误差/角度','FontWeight','bold');
-title('两种ESPRIT对1号信号的估计均方误差随信噪比变化图','FontWeight','bold');
+set(gca,'linewidth',2,'fontsize',25);
+xlabel('信噪比/dB','FontWeight','bold','FontSize',25);
+ylabel('均方误差/角度','FontWeight','bold','FontSize',25);
+title('两种ESPRIT对1号信号的估计均方误差随信噪比变化图','FontWeight','bold','FontSize',25);
 % 画两种ESPRIT对2号信号的估计均方误差随信噪比变化图
-subplot(122);
+figure(2);
 classical_2 = plot(test_SNR, RMSE_classical(:,2), 'bo-', 'LineWidth', 4);
 hold on
 dpm_2 = plot(test_SNR, RMSE_dpm(:,2), 'ro-', 'LineWidth', 4);
-legend('经典ESPRIT','分布式幂方法ESPRIT');
+legend('经典ESPRIT','分布式幂方法ESPRIT','FontSize',25);
 axis tight
-xlabel('信噪比/dB','FontWeight','bold');
-ylabel('均方误差/角度','FontWeight','bold');
-title('两种ESPRIT对2号信号的估计均方误差随信噪比变化图','FontWeight','bold');
+set(gca,'linewidth',2,'fontsize',25);
+xlabel('信噪比/dB','FontWeight','bold','FontSize',25);
+ylabel('均方误差/角度','FontWeight','bold','FontSize',25);
+title('两种ESPRIT对2号信号的估计均方误差随信噪比变化图','FontWeight','bold','FontSize',25);
 datatip(classical_1,0,RMSE_classical(4,1),'SnapToDataVertex','off');
 datatip(classical_2,0,RMSE_classical(4,2),'SnapToDataVertex','off');
 datatip(dpm_1,0,RMSE_dpm(4,1),'SnapToDataVertex','off');
